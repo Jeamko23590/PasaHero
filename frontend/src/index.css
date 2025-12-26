@@ -23,7 +23,7 @@ body {
 }
 
 .card {
-  @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
+  @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6;
 }
 
 .input {
@@ -35,9 +35,26 @@ body {
 }
 
 .badge {
-  @apply px-2 py-1 text-xs font-medium rounded-full;
+  @apply px-2 py-1 text-xs font-medium rounded-full whitespace-nowrap;
 }
 .badge-success { @apply bg-success-50 text-success-600; }
 .badge-warning { @apply bg-warning-50 text-warning-600; }
 .badge-danger { @apply bg-danger-50 text-danger-600; }
 .badge-primary { @apply bg-primary-50 text-primary-600; }
+
+/* Mobile responsive table */
+.table-responsive {
+  @apply overflow-x-auto -mx-4 sm:mx-0;
+}
+.table-responsive table {
+  @apply min-w-[600px] sm:min-w-full;
+}
+.table-responsive th,
+.table-responsive td {
+  @apply px-3 py-3 text-sm whitespace-nowrap;
+}
+
+/* Text truncation utility */
+.text-truncate {
+  @apply truncate max-w-[120px] sm:max-w-none;
+}

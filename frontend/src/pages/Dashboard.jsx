@@ -67,38 +67,38 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-500">Welcome to PasaHero Management System</p>
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Dashboard</h1>
+        <p className="text-sm sm:text-base text-gray-500">Welcome to PasaHero Management System</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         {statCards.map((stat, i) => (
           <div key={i} className="card">
-            <div className="flex items-center gap-4">
-              <div className={`w-12 h-12 ${stat.color} rounded-lg flex items-center justify-center`}>
-                <stat.icon className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-2 sm:gap-4">
+              <div className={`w-10 h-10 sm:w-12 sm:h-12 ${stat.color} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                <stat.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
-              <div>
-                <p className="text-2xl font-bold">{stat.value}</p>
-                <p className="text-sm text-gray-500">{stat.label}</p>
+              <div className="min-w-0">
+                <p className="text-lg sm:text-2xl font-bold truncate">{stat.value}</p>
+                <p className="text-xs sm:text-sm text-gray-500 truncate">{stat.label}</p>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6">
         {/* Enrollment Trend */}
         <div className="card lg:col-span-2">
-          <h3 className="font-semibold mb-4">Enrollment Trend</h3>
-          <ResponsiveContainer width="100%" height={250}>
+          <h3 className="font-semibold mb-4 text-sm sm:text-base">Enrollment Trend</h3>
+          <ResponsiveContainer width="100%" height={200}>
             <BarChart data={data.enrollment_trend}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-              <YAxis />
+              <XAxis dataKey="month" tick={{ fontSize: 10 }} interval={0} angle={-45} textAnchor="end" height={60} />
+              <YAxis tick={{ fontSize: 10 }} />
               <Tooltip />
               <Bar dataKey="count" fill="#3b82f6" radius={[4, 4, 0, 0]} />
             </BarChart>
@@ -107,10 +107,10 @@ export default function Dashboard() {
 
         {/* Session Distribution */}
         <div className="card">
-          <h3 className="font-semibold mb-4">Session Distribution</h3>
-          <ResponsiveContainer width="100%" height={200}>
+          <h3 className="font-semibold mb-4 text-sm sm:text-base">Session Distribution</h3>
+          <ResponsiveContainer width="100%" height={160}>
             <PieChart>
-              <Pie data={pieData} cx="50%" cy="50%" innerRadius={40} outerRadius={80} dataKey="value" label>
+              <Pie data={pieData} cx="50%" cy="50%" innerRadius={30} outerRadius={60} dataKey="value">
                 {pieData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
               </Pie>
               <Tooltip />
@@ -119,7 +119,7 @@ export default function Dashboard() {
           <div className="flex flex-wrap gap-2 mt-2 justify-center">
             {pieData.map((item, i) => (
               <span key={i} className="flex items-center gap-1 text-xs">
-                <span className="w-3 h-3 rounded" style={{ backgroundColor: COLORS[i] }}></span>
+                <span className="w-2 h-2 sm:w-3 sm:h-3 rounded" style={{ backgroundColor: COLORS[i] }}></span>
                 {item.name.replace('_', ' ')}
               </span>
             ))}
@@ -130,33 +130,33 @@ export default function Dashboard() {
       {/* Today's Schedule */}
       <div className="card">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold">Today's Schedule</h3>
-          <Clock className="w-5 h-5 text-gray-400" />
+          <h3 className="font-semibold text-sm sm:text-base">Today's Schedule</h3>
+          <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
+        <div className="overflow-x-auto -mx-4 sm:mx-0">
+          <table className="w-full min-w-[500px]">
             <thead>
-              <tr className="text-left text-sm text-gray-500 border-b">
-                <th className="pb-3">Time</th>
-                <th className="pb-3">Student</th>
-                <th className="pb-3">Instructor</th>
-                <th className="pb-3">Type</th>
-                <th className="pb-3">Status</th>
+              <tr className="text-left text-xs sm:text-sm text-gray-500 border-b">
+                <th className="pb-3 px-4 sm:px-2">Time</th>
+                <th className="pb-3 px-2">Student</th>
+                <th className="pb-3 px-2">Instructor</th>
+                <th className="pb-3 px-2">Type</th>
+                <th className="pb-3 px-2">Status</th>
               </tr>
             </thead>
             <tbody>
               {data.todays_schedule.map((session) => (
-                <tr key={session.id} className="border-b last:border-0">
-                  <td className="py-3 font-medium">{session.start_time}</td>
-                  <td className="py-3">{session.enrollment.student.full_name}</td>
-                  <td className="py-3">{session.instructor.full_name}</td>
-                  <td className="py-3">
-                    <span className="flex items-center gap-2">
+                <tr key={session.id} className="border-b last:border-0 text-xs sm:text-sm">
+                  <td className="py-3 px-4 sm:px-2 font-medium">{session.start_time}</td>
+                  <td className="py-3 px-2">{session.enrollment.student.full_name}</td>
+                  <td className="py-3 px-2">{session.instructor.full_name}</td>
+                  <td className="py-3 px-2">
+                    <span className="flex items-center gap-1">
                       {getSessionIcon(session.session_type)}
-                      {session.session_type.replace('_', ' ')}
+                      <span className="hidden sm:inline">{session.session_type.replace('_', ' ')}</span>
                     </span>
                   </td>
-                  <td className="py-3">{getStatusBadge(session.status)}</td>
+                  <td className="py-3 px-2">{getStatusBadge(session.status)}</td>
                 </tr>
               ))}
             </tbody>

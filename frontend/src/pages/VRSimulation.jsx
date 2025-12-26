@@ -199,48 +199,48 @@ export default function VRSimulation() {
   const currentScore = calculateScore()
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <Gamepad2 className="w-7 h-7 text-purple-600" />
-            VR Simulation Center
+          <h1 className="text-lg sm:text-2xl font-bold flex items-center gap-2">
+            <Gamepad2 className="w-5 h-5 sm:w-7 sm:h-7 text-purple-600" />
+            VR Simulation
           </h1>
-          <p className="text-gray-500">Immersive driving training with real-time feedback</p>
+          <p className="text-xs sm:text-base text-gray-500">Immersive driving training</p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
         <button 
           onClick={() => setActiveTab('scenarios')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm whitespace-nowrap ${
             activeTab === 'scenarios' ? 'bg-purple-600 text-white' : 'bg-gray-100 hover:bg-gray-200'
           }`}
         >
-          Training Scenarios
+          Scenarios
         </button>
         <button 
           onClick={() => setActiveTab('history')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm whitespace-nowrap ${
             activeTab === 'history' ? 'bg-purple-600 text-white' : 'bg-gray-100 hover:bg-gray-200'
           }`}
         >
-          Session History
+          History
         </button>
         <button 
           onClick={() => setActiveTab('analytics')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm whitespace-nowrap ${
             activeTab === 'analytics' ? 'bg-purple-600 text-white' : 'bg-gray-100 hover:bg-gray-200'
           }`}
         >
-          Performance Analytics
+          Analytics
         </button>
       </div>
 
       {/* Scenarios Tab */}
       {activeTab === 'scenarios' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {scenarios.map((scenario) => (
             <div 
               key={scenario.id}
@@ -250,22 +250,22 @@ export default function VRSimulation() {
               onClick={() => setSelectedScenario(scenario)}
             >
               <div className="flex items-start justify-between mb-3">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Gamepad2 className="w-6 h-6 text-purple-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <Gamepad2 className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                 </div>
                 {getDifficultyBadge(scenario.difficulty)}
               </div>
-              <h3 className="font-semibold mb-1">{scenario.name}</h3>
-              <p className="text-sm text-gray-500 mb-3">{scenario.description}</p>
-              <div className="flex items-center justify-between text-sm">
+              <h3 className="font-semibold mb-1 text-sm sm:text-base">{scenario.name}</h3>
+              <p className="text-xs sm:text-sm text-gray-500 mb-3 line-clamp-2">{scenario.description}</p>
+              <div className="flex items-center justify-between text-xs sm:text-sm">
                 <span className="flex items-center gap-1 text-gray-500">
-                  <Clock className="w-4 h-4" /> {scenario.duration} min
+                  <Clock className="w-3 h-3 sm:w-4 sm:h-4" /> {scenario.duration}m
                 </span>
                 <button 
                   onClick={(e) => { e.stopPropagation(); setSelectedScenario(scenario); setShowSessionModal(true); }}
                   className="flex items-center gap-1 text-purple-600 hover:text-purple-700 font-medium"
                 >
-                  <Play className="w-4 h-4" /> Start
+                  <Play className="w-3 h-3 sm:w-4 sm:h-4" /> Start
                 </button>
               </div>
             </div>
@@ -276,89 +276,89 @@ export default function VRSimulation() {
       {/* History Tab */}
       {activeTab === 'history' && (
         <div>
-          <div className="grid grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
             <div className="card">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Target className="w-5 h-5 text-purple-600" />
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Target className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
                 </div>
-                <div>
-                  <p className="text-2xl font-bold">{stats.total_sessions}</p>
-                  <p className="text-sm text-gray-500">Total Sessions</p>
+                <div className="min-w-0">
+                  <p className="text-lg sm:text-2xl font-bold">{stats.total_sessions}</p>
+                  <p className="text-xs sm:text-sm text-gray-500 truncate">Sessions</p>
                 </div>
               </div>
             </div>
             <div className="card">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-blue-600" />
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
                 </div>
-                <div>
-                  <p className="text-2xl font-bold">{stats.average_score}%</p>
-                  <p className="text-sm text-gray-500">Avg Score</p>
-                </div>
-              </div>
-            </div>
-            <div className="card">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Award className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">{stats.pass_rate}%</p>
-                  <p className="text-sm text-gray-500">Pass Rate</p>
+                <div className="min-w-0">
+                  <p className="text-lg sm:text-2xl font-bold">{stats.average_score}%</p>
+                  <p className="text-xs sm:text-sm text-gray-500 truncate">Avg Score</p>
                 </div>
               </div>
             </div>
             <div className="card">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-orange-600" />
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Award className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
                 </div>
-                <div>
-                  <p className="text-2xl font-bold">{stats.total_time}m</p>
-                  <p className="text-sm text-gray-500">Total Time</p>
+                <div className="min-w-0">
+                  <p className="text-lg sm:text-2xl font-bold">{stats.pass_rate}%</p>
+                  <p className="text-xs sm:text-sm text-gray-500 truncate">Pass Rate</p>
+                </div>
+              </div>
+            </div>
+            <div className="card">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-lg sm:text-2xl font-bold">{stats.total_time}m</p>
+                  <p className="text-xs sm:text-sm text-gray-500 truncate">Total Time</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="card">
-            <h3 className="font-semibold mb-4">Recent Sessions</h3>
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr className="text-left text-sm text-gray-500">
-                  <th className="px-4 py-3">Date</th>
-                  <th className="px-4 py-3">Student</th>
-                  <th className="px-4 py-3">Scenario</th>
-                  <th className="px-4 py-3">Duration</th>
-                  <th className="px-4 py-3">Score</th>
-                  <th className="px-4 py-3">Result</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sessions.map((session) => (
-                  <tr key={session.id} className="border-t">
-                    <td className="px-4 py-3">{session.created_at}</td>
-                    <td className="px-4 py-3 font-medium">{session.student}</td>
-                    <td className="px-4 py-3">{session.scenario_name}</td>
-                    <td className="px-4 py-3">{session.duration_minutes} min</td>
-                    <td className="px-4 py-3">
-                      <span className={`font-bold ${session.score >= 70 ? 'text-green-600' : 'text-red-600'}`}>
-                        {session.score}%
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      {session.passed ? (
-                        <span className="badge badge-success">Passed</span>
-                      ) : (
-                        <span className="badge badge-danger">Failed</span>
-                      )}
-                    </td>
+          <div className="card p-0 sm:p-6">
+            <h3 className="font-semibold mb-4 px-4 pt-4 sm:px-0 sm:pt-0 text-sm sm:text-base">Recent Sessions</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[500px]">
+                <thead className="bg-gray-50">
+                  <tr className="text-left text-xs sm:text-sm text-gray-500">
+                    <th className="px-3 sm:px-4 py-3">Date</th>
+                    <th className="px-3 sm:px-4 py-3">Student</th>
+                    <th className="px-3 sm:px-4 py-3 hidden sm:table-cell">Scenario</th>
+                    <th className="px-3 sm:px-4 py-3">Score</th>
+                    <th className="px-3 sm:px-4 py-3">Result</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {sessions.map((session) => (
+                    <tr key={session.id} className="border-t text-xs sm:text-sm">
+                      <td className="px-3 sm:px-4 py-3">{session.created_at}</td>
+                      <td className="px-3 sm:px-4 py-3 font-medium">{session.student}</td>
+                      <td className="px-3 sm:px-4 py-3 hidden sm:table-cell">{session.scenario_name}</td>
+                      <td className="px-3 sm:px-4 py-3">
+                        <span className={`font-bold ${session.score >= 70 ? 'text-green-600' : 'text-red-600'}`}>
+                          {session.score}%
+                        </span>
+                      </td>
+                      <td className="px-3 sm:px-4 py-3">
+                        {session.passed ? (
+                          <span className="badge badge-success">Pass</span>
+                        ) : (
+                          <span className="badge badge-danger">Fail</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
@@ -367,11 +367,11 @@ export default function VRSimulation() {
       {activeTab === 'analytics' && (
         <div>
           {/* Student Filter */}
-          <div className="card mb-6">
-            <div className="flex items-center gap-4">
-              <label className="font-medium text-gray-700">Filter by Student:</label>
+          <div className="card mb-4 sm:mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <label className="font-medium text-gray-700 text-sm">Filter by Student:</label>
               <select
-                className="input max-w-xs"
+                className="input sm:max-w-xs"
                 value={analyticsStudent}
                 onChange={(e) => setAnalyticsStudent(e.target.value)}
               >
@@ -380,38 +380,29 @@ export default function VRSimulation() {
                   <option key={s.id} value={s.name}>{s.name}</option>
                 ))}
               </select>
-              {analyticsStudent !== 'all' && (
-                <span className="text-sm text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
-                  Viewing: {analyticsStudent}
-                </span>
-              )}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <div className="card">
-              <h3 className="font-semibold mb-4">
-                Skill Assessment {analyticsStudent !== 'all' ? `- ${analyticsStudent}` : '(Average)'}
-              </h3>
-              <ResponsiveContainer width="100%" height={300}>
+              <h3 className="font-semibold mb-4 text-sm sm:text-base">Skill Assessment</h3>
+              <ResponsiveContainer width="100%" height={220}>
                 <RadarChart data={studentPerformanceData[analyticsStudent]?.skills || studentPerformanceData['all'].skills}>
                   <PolarGrid />
-                  <PolarAngleAxis dataKey="skill" tick={{ fontSize: 12 }} />
-                  <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                  <PolarAngleAxis dataKey="skill" tick={{ fontSize: 9 }} />
+                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fontSize: 9 }} />
                   <Radar name="Score" dataKey="value" stroke="#9333ea" fill="#9333ea" fillOpacity={0.5} />
                 </RadarChart>
               </ResponsiveContainer>
             </div>
 
             <div className="card">
-              <h3 className="font-semibold mb-4">
-                Score Progress {analyticsStudent !== 'all' ? `- ${analyticsStudent}` : '(All Students)'}
-              </h3>
-              <ResponsiveContainer width="100%" height={300}>
+              <h3 className="font-semibold mb-4 text-sm sm:text-base">Score Progress</h3>
+              <ResponsiveContainer width="100%" height={220}>
                 <LineChart data={studentPerformanceData[analyticsStudent]?.progress || studentPerformanceData['all'].progress}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="session" label={{ value: 'Session', position: 'bottom' }} />
-                  <YAxis domain={[0, 100]} />
+                  <XAxis dataKey="session" tick={{ fontSize: 10 }} />
+                  <YAxis domain={[0, 100]} tick={{ fontSize: 10 }} />
                   <Tooltip />
                   <Line type="monotone" dataKey="score" stroke="#9333ea" strokeWidth={2} dot={{ fill: '#9333ea' }} />
                 </LineChart>
@@ -419,81 +410,81 @@ export default function VRSimulation() {
             </div>
 
             <div className="card lg:col-span-2">
-              <h3 className="font-semibold mb-4 flex items-center gap-2">
-                <Zap className="w-5 h-5 text-yellow-500" />
-                AI-Powered Recommendations {analyticsStudent !== 'all' ? `for ${analyticsStudent}` : ''}
+              <h3 className="font-semibold mb-4 flex items-center gap-2 text-sm sm:text-base">
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
+                AI Recommendations
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {analyticsStudent === 'Pedro Reyes' ? (
                   <>
-                    <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertTriangle className="w-5 h-5 text-yellow-600" />
-                        <span className="font-medium text-yellow-800">Focus Area</span>
+                        <AlertTriangle className="w-4 h-4 text-yellow-600" />
+                        <span className="font-medium text-yellow-800 text-sm">Focus Area</span>
                       </div>
-                      <p className="text-sm text-yellow-700">Hazard awareness and mirror checks need significant improvement. Schedule additional practice sessions.</p>
+                      <p className="text-xs text-yellow-700">Hazard awareness needs improvement.</p>
                     </div>
-                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <div className="bg-green-50 p-3 rounded-lg border border-green-200">
                       <div className="flex items-center gap-2 mb-2">
-                        <Award className="w-5 h-5 text-green-600" />
-                        <span className="font-medium text-green-800">Strength</span>
+                        <Award className="w-4 h-4 text-green-600" />
+                        <span className="font-medium text-green-800 text-sm">Strength</span>
                       </div>
-                      <p className="text-sm text-green-700">Good signal usage! Keep practicing to maintain this skill.</p>
+                      <p className="text-xs text-green-700">Good signal usage!</p>
                     </div>
-                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
                       <div className="flex items-center gap-2 mb-2">
-                        <Target className="w-5 h-5 text-blue-600" />
-                        <span className="font-medium text-blue-800">Next Goal</span>
+                        <Target className="w-4 h-4 text-blue-600" />
+                        <span className="font-medium text-blue-800 text-sm">Next Goal</span>
                       </div>
-                      <p className="text-sm text-blue-700">Focus on beginner scenarios until scores improve to 70%+.</p>
+                      <p className="text-xs text-blue-700">Focus on beginner scenarios.</p>
                     </div>
                   </>
                 ) : analyticsStudent === 'Juan Dela Cruz' ? (
                   <>
-                    <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertTriangle className="w-5 h-5 text-yellow-600" />
-                        <span className="font-medium text-yellow-800">Focus Area</span>
+                        <AlertTriangle className="w-4 h-4 text-yellow-600" />
+                        <span className="font-medium text-yellow-800 text-sm">Focus Area</span>
                       </div>
-                      <p className="text-sm text-yellow-700">Hazard awareness can still be improved. Try more emergency scenarios.</p>
+                      <p className="text-xs text-yellow-700">Try more emergency scenarios.</p>
                     </div>
-                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <div className="bg-green-50 p-3 rounded-lg border border-green-200">
                       <div className="flex items-center gap-2 mb-2">
-                        <Award className="w-5 h-5 text-green-600" />
-                        <span className="font-medium text-green-800">Strength</span>
+                        <Award className="w-4 h-4 text-green-600" />
+                        <span className="font-medium text-green-800 text-sm">Strength</span>
                       </div>
-                      <p className="text-sm text-green-700">Excellent overall performance! Signal usage and reaction time are outstanding.</p>
+                      <p className="text-xs text-green-700">Excellent performance!</p>
                     </div>
-                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
                       <div className="flex items-center gap-2 mb-2">
-                        <Target className="w-5 h-5 text-blue-600" />
-                        <span className="font-medium text-blue-800">Next Goal</span>
+                        <Target className="w-4 h-4 text-blue-600" />
+                        <span className="font-medium text-blue-800 text-sm">Next Goal</span>
                       </div>
-                      <p className="text-sm text-blue-700">Ready for certification! Consider scheduling the final driving test.</p>
+                      <p className="text-xs text-blue-700">Ready for certification!</p>
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertTriangle className="w-5 h-5 text-yellow-600" />
-                        <span className="font-medium text-yellow-800">Focus Area</span>
+                        <AlertTriangle className="w-4 h-4 text-yellow-600" />
+                        <span className="font-medium text-yellow-800 text-sm">Focus Area</span>
                       </div>
-                      <p className="text-sm text-yellow-700">Hazard awareness needs improvement. Practice emergency scenarios more frequently.</p>
+                      <p className="text-xs text-yellow-700">Practice emergency scenarios.</p>
                     </div>
-                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <div className="bg-green-50 p-3 rounded-lg border border-green-200">
                       <div className="flex items-center gap-2 mb-2">
-                        <Award className="w-5 h-5 text-green-600" />
-                        <span className="font-medium text-green-800">Strength</span>
+                        <Award className="w-4 h-4 text-green-600" />
+                        <span className="font-medium text-green-800 text-sm">Strength</span>
                       </div>
-                      <p className="text-sm text-green-700">Excellent signal usage! Consistently using indicators before maneuvers.</p>
+                      <p className="text-xs text-green-700">Excellent signal usage!</p>
                     </div>
-                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
                       <div className="flex items-center gap-2 mb-2">
-                        <Target className="w-5 h-5 text-blue-600" />
-                        <span className="font-medium text-blue-800">Next Goal</span>
+                        <Target className="w-4 h-4 text-blue-600" />
+                        <span className="font-medium text-blue-800 text-sm">Next Goal</span>
                       </div>
-                      <p className="text-sm text-blue-700">Ready for advanced scenarios. Try "Rain Conditions" to challenge yourself.</p>
+                      <p className="text-xs text-blue-700">Try "Rain Conditions".</p>
                     </div>
                   </>
                 )}

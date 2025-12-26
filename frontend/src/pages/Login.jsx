@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { Car, Eye, EyeOff, Loader2, GraduationCap, Users, Shield } from 'lucide-react'
+import { Eye, EyeOff, Loader2, GraduationCap, Users, Shield } from 'lucide-react'
+import Logo from '../components/Logo'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -33,7 +34,7 @@ export default function Login() {
           navigate('/')
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid credentials')
+      setError(err.message || 'Invalid credentials')
     } finally {
       setLoading(false)
     }
@@ -68,9 +69,7 @@ export default function Login() {
         <div className="relative z-10 p-12 flex flex-col justify-between w-full">
           <div>
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
-                <Car className="w-7 h-7 text-white" />
-              </div>
+              <Logo size={48} />
               <span className="text-2xl font-bold text-white">PasaHero</span>
             </div>
           </div>
@@ -111,8 +110,8 @@ export default function Login() {
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4">
-              <Car className="w-8 h-8 text-white" />
+            <div className="inline-block mb-4">
+              <Logo size={64} />
             </div>
             <h1 className="text-2xl font-bold text-gray-900">PasaHero</h1>
             <p className="text-gray-500">Smart Driving School Management</p>

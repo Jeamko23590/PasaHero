@@ -44,4 +44,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # Videos (large files)
-*.mp4
+# *.mp4
+!frontend/public/videos/*.mp4

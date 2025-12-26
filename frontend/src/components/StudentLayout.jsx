@@ -2,8 +2,9 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { 
   LayoutDashboard, Calendar, BookOpen, Award,
-  Car, LogOut, UserCircle, Gamepad2, User
+  LogOut, UserCircle, Gamepad2, User
 } from 'lucide-react'
+import Logo from './Logo'
 
 const navItems = [
   { to: '/student', icon: LayoutDashboard, label: 'Dashboard', end: true },
@@ -29,9 +30,7 @@ export default function StudentLayout() {
       <aside className="w-64 bg-green-900 text-white flex flex-col">
         <div className="p-6 border-b border-green-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
-              <Car className="w-6 h-6" />
-            </div>
+            <Logo size={40} />
             <div>
               <h1 className="font-bold text-lg">PasaHero</h1>
               <p className="text-xs text-green-300">Student Portal</p>

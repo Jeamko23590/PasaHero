@@ -28,23 +28,6 @@ const initialHistory = [
   { id: 5, scenario_name: 'Night Driving', student: 'Juan Dela Cruz', score: 88, passed: true, created_at: '2024-12-24', duration_minutes: 20 },
 ]
 
-const performanceData = [
-  { skill: 'Reaction Time', value: 85 },
-  { skill: 'Lane Discipline', value: 78 },
-  { skill: 'Speed Control', value: 82 },
-  { skill: 'Signal Usage', value: 90 },
-  { skill: 'Mirror Checks', value: 75 },
-  { skill: 'Hazard Awareness', value: 70 },
-]
-
-const progressData = [
-  { session: '1', score: 65 },
-  { session: '2', score: 72 },
-  { session: '3', score: 68 },
-  { session: '4', score: 78 },
-  { session: '5', score: 85 },
-]
-
 const evaluationCriteria = [
   { id: 'seatbelt', label: 'Proper seatbelt usage', points: 10 },
   { id: 'mirrors', label: 'Mirror checks before maneuvers', points: 10 },
@@ -57,12 +40,94 @@ const evaluationCriteria = [
   { id: 'rules', label: 'Traffic rules compliance', points: 5 },
 ]
 
+// Performance data per student
+const studentPerformanceData = {
+  'all': {
+    skills: [
+      { skill: 'Reaction Time', value: 85 },
+      { skill: 'Lane Discipline', value: 78 },
+      { skill: 'Speed Control', value: 82 },
+      { skill: 'Signal Usage', value: 90 },
+      { skill: 'Mirror Checks', value: 75 },
+      { skill: 'Hazard Awareness', value: 70 },
+    ],
+    progress: [
+      { session: '1', score: 65 },
+      { session: '2', score: 72 },
+      { session: '3', score: 68 },
+      { session: '4', score: 78 },
+      { session: '5', score: 85 },
+    ]
+  },
+  'Juan Dela Cruz': {
+    skills: [
+      { skill: 'Reaction Time', value: 88 },
+      { skill: 'Lane Discipline', value: 82 },
+      { skill: 'Speed Control', value: 85 },
+      { skill: 'Signal Usage', value: 92 },
+      { skill: 'Mirror Checks', value: 80 },
+      { skill: 'Hazard Awareness', value: 75 },
+    ],
+    progress: [
+      { session: '1', score: 70 },
+      { session: '2', score: 78 },
+      { session: '3', score: 85 },
+      { session: '4', score: 88 },
+    ]
+  },
+  'Maria Garcia': {
+    skills: [
+      { skill: 'Reaction Time', value: 80 },
+      { skill: 'Lane Discipline', value: 75 },
+      { skill: 'Speed Control', value: 78 },
+      { skill: 'Signal Usage', value: 88 },
+      { skill: 'Mirror Checks', value: 72 },
+      { skill: 'Hazard Awareness', value: 68 },
+    ],
+    progress: [
+      { session: '1', score: 65 },
+      { session: '2', score: 72 },
+      { session: '3', score: 78 },
+    ]
+  },
+  'Pedro Reyes': {
+    skills: [
+      { skill: 'Reaction Time', value: 72 },
+      { skill: 'Lane Discipline', value: 68 },
+      { skill: 'Speed Control', value: 70 },
+      { skill: 'Signal Usage', value: 82 },
+      { skill: 'Mirror Checks', value: 65 },
+      { skill: 'Hazard Awareness', value: 60 },
+    ],
+    progress: [
+      { session: '1', score: 55 },
+      { session: '2', score: 62 },
+      { session: '3', score: 65 },
+    ]
+  },
+  'Ana Santos': {
+    skills: [
+      { skill: 'Reaction Time', value: 85 },
+      { skill: 'Lane Discipline', value: 80 },
+      { skill: 'Speed Control', value: 82 },
+      { skill: 'Signal Usage', value: 90 },
+      { skill: 'Mirror Checks', value: 78 },
+      { skill: 'Hazard Awareness', value: 72 },
+    ],
+    progress: [
+      { session: '1', score: 68 },
+      { session: '2', score: 72 },
+    ]
+  },
+}
+
 export default function VRSimulation() {
   const [selectedScenario, setSelectedScenario] = useState(null)
   const [activeTab, setActiveTab] = useState('scenarios')
   const [showSessionModal, setShowSessionModal] = useState(false)
   const [showActiveModal, setShowActiveModal] = useState(false)
   const [selectedStudent, setSelectedStudent] = useState('')
+  const [analyticsStudent, setAnalyticsStudent] = useState('all')
   const [sessions, setSessions] = useState(initialHistory)
   const [activeSession, setActiveSession] = useState(null)
   const [checkedItems, setCheckedItems] = useState({})
@@ -300,58 +365,138 @@ export default function VRSimulation() {
 
       {/* Analytics Tab */}
       {activeTab === 'analytics' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="card">
-            <h3 className="font-semibold mb-4">Skill Assessment (Average)</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <RadarChart data={performanceData}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="skill" tick={{ fontSize: 12 }} />
-                <PolarRadiusAxis angle={30} domain={[0, 100]} />
-                <Radar name="Score" dataKey="value" stroke="#9333ea" fill="#9333ea" fillOpacity={0.5} />
-              </RadarChart>
-            </ResponsiveContainer>
+        <div>
+          {/* Student Filter */}
+          <div className="card mb-6">
+            <div className="flex items-center gap-4">
+              <label className="font-medium text-gray-700">Filter by Student:</label>
+              <select
+                className="input max-w-xs"
+                value={analyticsStudent}
+                onChange={(e) => setAnalyticsStudent(e.target.value)}
+              >
+                <option value="all">All Students (Average)</option>
+                {mockStudents.map(s => (
+                  <option key={s.id} value={s.name}>{s.name}</option>
+                ))}
+              </select>
+              {analyticsStudent !== 'all' && (
+                <span className="text-sm text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
+                  Viewing: {analyticsStudent}
+                </span>
+              )}
+            </div>
           </div>
 
-          <div className="card">
-            <h3 className="font-semibold mb-4">Score Progress</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={progressData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="session" label={{ value: 'Session', position: 'bottom' }} />
-                <YAxis domain={[0, 100]} />
-                <Tooltip />
-                <Line type="monotone" dataKey="score" stroke="#9333ea" strokeWidth={2} dot={{ fill: '#9333ea' }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="card">
+              <h3 className="font-semibold mb-4">
+                Skill Assessment {analyticsStudent !== 'all' ? `- ${analyticsStudent}` : '(Average)'}
+              </h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <RadarChart data={studentPerformanceData[analyticsStudent]?.skills || studentPerformanceData['all'].skills}>
+                  <PolarGrid />
+                  <PolarAngleAxis dataKey="skill" tick={{ fontSize: 12 }} />
+                  <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                  <Radar name="Score" dataKey="value" stroke="#9333ea" fill="#9333ea" fillOpacity={0.5} />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
 
-          <div className="card lg:col-span-2">
-            <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <Zap className="w-5 h-5 text-yellow-500" />
-              AI-Powered Recommendations
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <AlertTriangle className="w-5 h-5 text-yellow-600" />
-                  <span className="font-medium text-yellow-800">Focus Area</span>
-                </div>
-                <p className="text-sm text-yellow-700">Hazard awareness needs improvement. Practice emergency scenarios more frequently.</p>
-              </div>
-              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <Award className="w-5 h-5 text-green-600" />
-                  <span className="font-medium text-green-800">Strength</span>
-                </div>
-                <p className="text-sm text-green-700">Excellent signal usage! Consistently using indicators before maneuvers.</p>
-              </div>
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <Target className="w-5 h-5 text-blue-600" />
-                  <span className="font-medium text-blue-800">Next Goal</span>
-                </div>
-                <p className="text-sm text-blue-700">Ready for advanced scenarios. Try "Rain Conditions" to challenge yourself.</p>
+            <div className="card">
+              <h3 className="font-semibold mb-4">
+                Score Progress {analyticsStudent !== 'all' ? `- ${analyticsStudent}` : '(All Students)'}
+              </h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={studentPerformanceData[analyticsStudent]?.progress || studentPerformanceData['all'].progress}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="session" label={{ value: 'Session', position: 'bottom' }} />
+                  <YAxis domain={[0, 100]} />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="score" stroke="#9333ea" strokeWidth={2} dot={{ fill: '#9333ea' }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="card lg:col-span-2">
+              <h3 className="font-semibold mb-4 flex items-center gap-2">
+                <Zap className="w-5 h-5 text-yellow-500" />
+                AI-Powered Recommendations {analyticsStudent !== 'all' ? `for ${analyticsStudent}` : ''}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {analyticsStudent === 'Pedro Reyes' ? (
+                  <>
+                    <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <AlertTriangle className="w-5 h-5 text-yellow-600" />
+                        <span className="font-medium text-yellow-800">Focus Area</span>
+                      </div>
+                      <p className="text-sm text-yellow-700">Hazard awareness and mirror checks need significant improvement. Schedule additional practice sessions.</p>
+                    </div>
+                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Award className="w-5 h-5 text-green-600" />
+                        <span className="font-medium text-green-800">Strength</span>
+                      </div>
+                      <p className="text-sm text-green-700">Good signal usage! Keep practicing to maintain this skill.</p>
+                    </div>
+                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Target className="w-5 h-5 text-blue-600" />
+                        <span className="font-medium text-blue-800">Next Goal</span>
+                      </div>
+                      <p className="text-sm text-blue-700">Focus on beginner scenarios until scores improve to 70%+.</p>
+                    </div>
+                  </>
+                ) : analyticsStudent === 'Juan Dela Cruz' ? (
+                  <>
+                    <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <AlertTriangle className="w-5 h-5 text-yellow-600" />
+                        <span className="font-medium text-yellow-800">Focus Area</span>
+                      </div>
+                      <p className="text-sm text-yellow-700">Hazard awareness can still be improved. Try more emergency scenarios.</p>
+                    </div>
+                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Award className="w-5 h-5 text-green-600" />
+                        <span className="font-medium text-green-800">Strength</span>
+                      </div>
+                      <p className="text-sm text-green-700">Excellent overall performance! Signal usage and reaction time are outstanding.</p>
+                    </div>
+                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Target className="w-5 h-5 text-blue-600" />
+                        <span className="font-medium text-blue-800">Next Goal</span>
+                      </div>
+                      <p className="text-sm text-blue-700">Ready for certification! Consider scheduling the final driving test.</p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <AlertTriangle className="w-5 h-5 text-yellow-600" />
+                        <span className="font-medium text-yellow-800">Focus Area</span>
+                      </div>
+                      <p className="text-sm text-yellow-700">Hazard awareness needs improvement. Practice emergency scenarios more frequently.</p>
+                    </div>
+                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Award className="w-5 h-5 text-green-600" />
+                        <span className="font-medium text-green-800">Strength</span>
+                      </div>
+                      <p className="text-sm text-green-700">Excellent signal usage! Consistently using indicators before maneuvers.</p>
+                    </div>
+                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Target className="w-5 h-5 text-blue-600" />
+                        <span className="font-medium text-blue-800">Next Goal</span>
+                      </div>
+                      <p className="text-sm text-blue-700">Ready for advanced scenarios. Try "Rain Conditions" to challenge yourself.</p>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

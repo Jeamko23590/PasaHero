@@ -32,71 +32,52 @@ export default function StudentSchedule() {
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold">My Schedule</h1>
-        <p className="text-gray-500">View your upcoming and past sessions</p>
+    <div className="p-4 md:p-6">
+      <div className="mb-4">
+        <h1 className="text-xl md:text-2xl font-bold">My Schedule</h1>
+        <p className="text-sm text-gray-500">Your sessions</p>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-4">
         <button
           onClick={() => setFilter('upcoming')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-            filter === 'upcoming' ? 'bg-green-600 text-white' : 'bg-gray-100 hover:bg-gray-200'
-          }`}
+          className={`px-4 py-2 rounded-lg font-medium text-sm ${filter === 'upcoming' ? 'bg-green-600 text-white' : 'bg-gray-100'}`}
         >
           Upcoming ({upcoming.length})
         </button>
         <button
           onClick={() => setFilter('completed')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-            filter === 'completed' ? 'bg-green-600 text-white' : 'bg-gray-100 hover:bg-gray-200'
-          }`}
+          className={`px-4 py-2 rounded-lg font-medium text-sm ${filter === 'completed' ? 'bg-green-600 text-white' : 'bg-gray-100'}`}
         >
           Completed ({completed.length})
         </button>
       </div>
 
       {/* Schedule List */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {displayed.map((session) => (
-          <div key={session.id} className={`card border-l-4 ${getSessionColor(session.session_type)}`}>
-            <div className="flex items-center gap-4">
-              <div className="text-4xl">{getSessionIcon(session.session_type)}</div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-lg capitalize">{session.session_type.replace('_', ' ')}</h3>
-                  {session.status === 'completed' && (
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                  )}
+          <div key={session.id} className={`bg-white rounded-xl p-4 shadow-sm border-l-4 ${getSessionColor(session.session_type)}`}>
+            <div className="flex items-start gap-3">
+              <div className="text-2xl md:text-3xl">{getSessionIcon(session.session_type)}</div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="font-semibold capitalize">{session.session_type.replace('_', ' ')}</h3>
+                  {session.status === 'completed' && <CheckCircle className="w-4 h-4 text-green-500" />}
                 </div>
-                <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600">
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" /> {session.scheduled_date}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" /> {session.start_time} - {session.end_time}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <User className="w-4 h-4" /> {session.instructor.full_name}
-                  </span>
-                  {session.vehicle && (
-                    <span className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4" /> {session.vehicle.display_name}
-                    </span>
-                  )}
+                <div className="space-y-1 text-sm text-gray-600">
+                  <p className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {session.scheduled_date}</p>
+                  <p className="flex items-center gap-1"><Clock className="w-3 h-3" /> {session.start_time} - {session.end_time}</p>
+                  <p className="flex items-center gap-1"><User className="w-3 h-3" /> {session.instructor.full_name}</p>
+                  {session.vehicle && <p className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {session.vehicle.display_name}</p>}
                 </div>
               </div>
-              {session.status === 'scheduled' && (
-                <button className="btn btn-secondary text-sm">Reschedule</button>
-              )}
             </div>
           </div>
         ))}
 
         {displayed.length === 0 && (
-          <div className="card text-center py-12">
+          <div className="bg-white rounded-xl p-8 text-center shadow-sm border">
             <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-4" />
             <p className="text-gray-500">No {filter} sessions</p>
           </div>
